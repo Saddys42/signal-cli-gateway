@@ -1,0 +1,28 @@
+services:
+  signal-cli:
+    # Official signal-cli packaging (keep updated: Signal expires old clients
+    # after ~3 months). Variants: native | jre
+    image: registry.gitlab.com/packaging/signal-cli/signal-cli-jre:latest
+    command: daemon --tcp 0.0.0.0:7583 --receive-mode on-connection
+    volumes:
+      - signal-cli-data:/var/lib/signal-cli
+    tmpfs:
+      - /tmp:exec
+    restart: unless-stopped
+
+  gateway:
+    build: .
+    depends_on:
+      - signal-cli
+    environment:
+      SG_SIGNAL_CLI_HOST: signal-cli
+      SG_SIGNAL_CLI_PORT: "7583"
+      SG_API_KEY: "${SG_API_KEY:-change-me}"
+      SG_WEBHOOK_URL: "${SG_WEBHOOK_URL:-}"
+      SG_WEBHOOK_SECRET: "${SG_WEBHOOK_SECRET:-}"
+    ports:
+      - "8000:8000"
+    restart: unless-stopped
+
+volumes:
+  signal-cli-data:

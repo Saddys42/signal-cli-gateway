@@ -1,0 +1,19 @@
+.env
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/
+.ruff_cache/
+link-qr.png
+campaign_state.json
+campaign_state.json.tmp
+# signal-cli account data = full account keys. NEVER commit this.
+signal-cli-data/
+tools/
+run/
+*.session
+# Local-only desktop UI (not part of the public gateway).
+gui/
+tests/test_distribution.py
+tests/test_broadcast.py
+tests/test_gui_engine.py
